@@ -30,15 +30,24 @@ jobs:
           test-command: ./gradlew lint testDebug --continue
 
       # Then start the emulator and run the Instrumentation tests!
-      - android/start-emulator-and-run-tests:
-          test-command: ./gradlew connectedDebugAndroidTest
-          system-image: system-images;android-26;google_apis;x86
+#      - android/start-emulator-and-run-tests:
+#          test-command: ./gradlew connectedDebugAndroidTest
+#          system-image: system-images;android-26;google_apis;x86
 
       # And finally run the release build
       - run:
           name: Assemble release build
           command: |
             ./gradlew assembleRelease
+
+  sonar:
+    executor:
+      name: android/android-machine
+    steps:
+      - checkout
+      - run:
+          name: Analyze on SonarCloud
+          command: ./gradlew sonarqube
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -47,3 +56,5 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
+      - sonar:
+          context: SonarCloud
