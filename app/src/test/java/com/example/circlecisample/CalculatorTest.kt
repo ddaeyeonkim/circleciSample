@@ -17,4 +17,10 @@ class CalculatorTest {
         val actual = sut.add(1, 2)
         assertEquals(3, actual)
     }
+
+    @Test
+    fun when_two_minus_one_then_one() {
+        val actual = sut.minus(2, 1)
+        assertEquals(1, actual)
+    }
 }
