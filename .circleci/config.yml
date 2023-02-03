@@ -41,8 +41,8 @@ jobs:
             ./gradlew assembleRelease
 
   sonar:
-    docker:
-      - image: 'circleci/openjdk:11-jdk'
+    executor:
+      name: android/android-machine
     steps:
       - checkout
       - run:
