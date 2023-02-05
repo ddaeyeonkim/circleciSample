@@ -47,7 +47,7 @@ jobs:
       - checkout
       - run:
           name: Analyze on SonarCloud
-          command: ./gradlew createDebugUnitTestCoverageReport sonarqube
+          command: ./gradlew coverageReport sonarqube
       - run:
           name: Save test results
           command: |
