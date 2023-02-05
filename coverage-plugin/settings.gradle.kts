@@ -1,10 +1,11 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,8 +13,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "circleciSample"
-include ':app'
-include ':data'
-include ':lib'
-includeBuild 'coverage-plugin'
