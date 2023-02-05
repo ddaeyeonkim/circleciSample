@@ -13,7 +13,21 @@ sonarqube {
         property("sonar.projectKey", "ddaeyeonkim_circleciSample")
         property("sonar.organization", "danielkim")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.junit.reportPaths", "${project.rootDir}/app/build/test-results/testDebugUnitTest")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/app/build/reports/coverage/test/debug/report.xml")
+        property(
+            "sonar.junit.reportPaths",
+            listOf(
+                "**/build/test-results/testDebugUnitTest",
+                "**/build/test-results/testStagingDebugUnitTest",
+                "**/build/test-results/test",
+            )
+        )
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            listOf(
+                "**/build/reports/coverage/test/debug/report.xml",
+                "**/build/reports/coverage/test/staging/debug/report.xml",
+                "**/build/reports/coverageReport/coverageReport.xml",
+            )
+        )
     }
 }
