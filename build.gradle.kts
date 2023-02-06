@@ -100,7 +100,7 @@ sonar {
                 "**/build/test-results/test",
             )
         )
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/build/reports/merged/kover/xnl/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/build/reports/kover/merged/xml/report.xml")
     }
 }
 
