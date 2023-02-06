@@ -16,10 +16,46 @@ subprojects {
     kover {
         filters {
             classes {
-                excludes += excludesPaths
+                excludes += listOf(
+                    // DataBinding
+                    "*.databinding.*",
+                    "*.BR",
+                    "*.DataBinderMapperImpl",
+                    "*.DataBinderMapperImpl\$*",
+                    "*.DataBindingTriggerClass",
+                    // Dagger
+                    "dagger.hilt.internal.aggregatedroot.codegen.*",
+                    "hilt_aggregated_deps.*",
+                    "*ComposableSingletons*",
+                    "*_HiltModules*",
+                    "*Hilt_*",
+                    "*BuildConfig",
+                    "*.DaggerAppComponent",
+                    "*.DaggerAppComponent\$*",
+                    "*_Factory\$*",
+                    "*_Provide*\$*",
+                    // Glide
+                    "com.bumptech.glide.*",
+                    "*.Glide*",
+                    // Navigation
+                    "*Args",
+                    "*Args\$*",
+                    "*Directions",
+                    "*Directions\$*",
+                    // Generated Callback
+                    "*.generated.*",
+                    // Room
+                    "*_Impl",
+                    "*_Impl\$*",
+                )
             }
             annotations {
-                excludes += excludesAnnotations
+                excludes += listOf(
+                    "dagger.Module",
+                    "dagger.internal.DaggerGenerated",
+                    "javax.annotation.Generated",
+                    "com.bumptech.glide.annotation.GlideModule"
+                )
             }
         }
 
@@ -71,44 +107,3 @@ sonar {
 fun TestedExtension.hasVariant(variant: String): Boolean {
     return unitTestVariants.firstOrNull { it.name == "${variant}UnitTest" }?.let { true } ?: false
 }
-
-val excludesPaths = listOf(
-    // DataBinding
-    "*.databinding.*",
-    "*.BR",
-    "*.DataBinderMapperImpl",
-    "*.DataBinderMapperImpl\$*",
-    "*.DataBindingTriggerClass",
-    // Dagger
-    "dagger.hilt.internal.aggregatedroot.codegen.*",
-    "hilt_aggregated_deps.*",
-    "*ComposableSingletons*",
-    "*_HiltModules*",
-    "*Hilt_*",
-    "*BuildConfig",
-    "*.DaggerAppComponent",
-    "*.DaggerAppComponent\$*",
-    "*_Factory\$*",
-    "*_Provide*\$*",
-    // Glide
-    "com.bumptech.glide.*",
-    "*.Glide*",
-    // Navigation
-    "*Args",
-    "*Args\$*",
-    "*Directions",
-    "*Directions\$*",
-    // Generated Callback
-    "*.generated.*",
-    // Room
-    "*_Impl",
-    "*_Impl\$*",
-)
-
-val excludesAnnotations = listOf(
-    "dagger.Module",
-    "dagger.internal.DaggerGenerated",
-    "javax.annotation.Generated",
-    "com.bumptech.glide.annotation.GlideModule"
-)
-
