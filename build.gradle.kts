@@ -24,57 +24,57 @@ allprojects {
                 )
             )
         }
+
+        filters {
+            classes {
+                excludes += listOf(
+                    // DataBinding
+                    "*.databinding.*",
+                    "*.BR",
+                    "*.DataBinderMapperImpl",
+                    "*.DataBinderMapperImpl\$*",
+                    "*.DataBindingTriggerClass",
+                    // Dagger
+                    "dagger.hilt.internal.aggregatedroot.codegen.*",
+                    "hilt_aggregated_deps.*",
+                    "*ComposableSingletons*",
+                    "*_HiltModules*",
+                    "*Hilt_*",
+                    "*BuildConfig",
+                    "*.DaggerAppComponent",
+                    "*.DaggerAppComponent\$*",
+                    "*_Factory\$*",
+                    "*_Provide*\$*",
+                    // Glide
+                    "com.bumptech.glide.*",
+                    "*.Glide*",
+                    // Navigation
+                    "*Args",
+                    "*Args\$*",
+                    "*Directions",
+                    "*Directions\$*",
+                    // Generated Callback
+                    "*.generated.*",
+                    // Room
+                    "*_Impl",
+                    "*_Impl\$*",
+                )
+            }
+
+            annotations {
+                excludes += listOf(
+                    "dagger.Module",
+                    "dagger.internal.DaggerGenerated",
+                    "javax.annotation.Generated",
+                    "com.bumptech.glide.annotation.GlideModule"
+                )
+            }
+        }
     }
 }
 
 koverMerged {
     enable()
-
-    filters {
-        classes {
-            excludes += listOf(
-                // DataBinding
-                "*.databinding.*",
-                "*.BR",
-                "*.DataBinderMapperImpl",
-                "*.DataBinderMapperImpl\$*",
-                "*.DataBindingTriggerClass",
-                // Dagger
-                "dagger.hilt.internal.aggregatedroot.codegen.*",
-                "hilt_aggregated_deps.*",
-                "*ComposableSingletons*",
-                "*_HiltModules*",
-                "*Hilt_*",
-                "*BuildConfig",
-                "*.DaggerAppComponent",
-                "*.DaggerAppComponent\$*",
-                "*_Factory\$*",
-                "*_Provide*\$*",
-                // Glide
-                "com.bumptech.glide.*",
-                "*.Glide*",
-                // Navigation
-                "*Args",
-                "*Args\$*",
-                "*Directions",
-                "*Directions\$*",
-                // Generated Callback
-                "*.generated.*",
-                // Room
-                "*_Impl",
-                "*_Impl\$*",
-            )
-        }
-
-        annotations {
-            excludes += listOf(
-                "dagger.Module",
-                "dagger.internal.DaggerGenerated",
-                "javax.annotation.Generated",
-                "com.bumptech.glide.annotation.GlideModule"
-            )
-        }
-    }
 }
 
 sonarqube {
@@ -90,6 +90,7 @@ sonarqube {
                 "**/build/test-results/test",
             )
         )
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/merged/xml/report.xml")
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/reports/kover/xml/report.xml")
     }
 }
