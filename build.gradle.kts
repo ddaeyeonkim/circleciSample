@@ -90,7 +90,6 @@ sonarqube {
                 "**/build/test-results/test",
             )
         )
-        property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.coverage.jacoco.xmlReportPaths", "**/reports/kover/xml/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/xml/report.xml")
     }
 }
