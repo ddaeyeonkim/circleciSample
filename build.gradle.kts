@@ -5,7 +5,76 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.7.21" apply false
     id("org.sonarqube") version "3.5.0.2730"
     id("org.jetbrains.kotlin.jvm") version "1.7.21" apply false
-    id("coverage")
+    // id("coverage")
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+}
+
+allprojects {
+    apply(plugin = "kover")
+    kover {
+        instrumentation {
+            excludeTasks.addAll(
+                listOf(
+                    "testReleaseUnitTest",
+                    "testProdDebugUnitTest",
+                    "testProdReleaseUnitTest",
+                    "testStagingReleaseUnitTest",
+                    "testDevDebugUnitTest",
+                    "testDevReleaseUnitTest",
+                )
+            )
+        }
+    }
+}
+
+koverMerged {
+    enable()
+
+    filters {
+        classes {
+            excludes += listOf(
+                // DataBinding
+                "*.databinding.*",
+                "*.BR",
+                "*.DataBinderMapperImpl",
+                "*.DataBinderMapperImpl\$*",
+                "*.DataBindingTriggerClass",
+                // Dagger
+                "dagger.hilt.internal.aggregatedroot.codegen.*",
+                "hilt_aggregated_deps.*",
+                "*ComposableSingletons*",
+                "*_HiltModules*",
+                "*Hilt_*",
+                "*BuildConfig",
+                "*.DaggerAppComponent",
+                "*.DaggerAppComponent\$*",
+                "*_Factory\$*",
+                "*_Provide*\$*",
+                // Glide
+                "com.bumptech.glide.*",
+                "*.Glide*",
+                // Navigation
+                "*Args",
+                "*Args\$*",
+                "*Directions",
+                "*Directions\$*",
+                // Generated Callback
+                "*.generated.*",
+                // Room
+                "*_Impl",
+                "*_Impl\$*",
+            )
+        }
+
+        annotations {
+            excludes += listOf(
+                "dagger.Module",
+                "dagger.internal.DaggerGenerated",
+                "javax.annotation.Generated",
+                "com.bumptech.glide.annotation.GlideModule"
+            )
+        }
+    }
 }
 
 sonarqube {
@@ -21,13 +90,6 @@ sonarqube {
                 "**/build/test-results/test",
             )
         )
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            listOf(
-                "**/build/reports/coverage/test/debug/report.xml",
-                "**/build/reports/coverage/test/staging/debug/report.xml",
-                "**/build/reports/coverageReport/coverageReport.xml",
-            )
-        )
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/merged/xml/report.xml")
     }
 }
