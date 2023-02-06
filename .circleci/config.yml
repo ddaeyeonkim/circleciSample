@@ -47,7 +47,7 @@ jobs:
       - checkout
       - run:
           name: Analyze on SonarCloud
-          command: ./gradlew koverXmlReport sonarqube
+          command: ./gradlew koverXmlReport sonar
       - run:
           name: Save test results
           command: |
