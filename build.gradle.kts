@@ -77,7 +77,7 @@ subprojects {
         val android = the<TestedExtension>()
         afterEvaluate {
             sonar {
-                androidVariant = if(android.hasVariant("prodDebug")) "prodDebug" else "debug"
+                androidVariant = if(android.hasVariant("stagingDebug")) "stagingDebug" else "debug"
             }
         }
     }
@@ -100,7 +100,7 @@ sonar {
                 "**/build/test-results/test",
             )
         )
-        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/xml/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/build/reports/merged/kover/xnl/report.xml")
     }
 }
 
