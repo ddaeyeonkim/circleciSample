@@ -41,7 +41,7 @@ subprojects {
         val android = the<TestedExtension>()
         afterEvaluate {
             sonar {
-                androidVariant = if(android.hasVariant("prodDebug")) "prodDebug" else null
+                androidVariant = if(android.hasVariant("prodDebug")) "prodDebug" else "debug"
             }
         }
     }
