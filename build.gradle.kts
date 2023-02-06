@@ -1,3 +1,5 @@
+import com.android.build.gradle.TestedExtension
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "7.4.1" apply false
@@ -9,9 +11,18 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
 
-allprojects {
+subprojects {
     apply(plugin = "kover")
     kover {
+        filters {
+            classes {
+                excludes += excludesPaths
+            }
+            annotations {
+                excludes += excludesAnnotations
+            }
+        }
+
         instrumentation {
             excludeTasks.addAll(
                 listOf(
@@ -20,54 +31,17 @@ allprojects {
                     "testProdReleaseUnitTest",
                     "testStagingReleaseUnitTest",
                     "testDevDebugUnitTest",
-                    "testDevReleaseUnitTest",
+                    "testDevReleaseUnitTest"
                 )
             )
         }
+    }
 
-        filters {
-            classes {
-                excludes += listOf(
-                    // DataBinding
-                    "*.databinding.*",
-                    "*.BR",
-                    "*.DataBinderMapperImpl",
-                    "*.DataBinderMapperImpl\$*",
-                    "*.DataBindingTriggerClass",
-                    // Dagger
-                    "dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
-                    "*ComposableSingletons*",
-                    "*_HiltModules*",
-                    "*Hilt_*",
-                    "*BuildConfig",
-                    "*.DaggerAppComponent",
-                    "*.DaggerAppComponent\$*",
-                    "*_Factory\$*",
-                    "*_Provide*\$*",
-                    // Glide
-                    "com.bumptech.glide.*",
-                    "*.Glide*",
-                    // Navigation
-                    "*Args",
-                    "*Args\$*",
-                    "*Directions",
-                    "*Directions\$*",
-                    // Generated Callback
-                    "*.generated.*",
-                    // Room
-                    "*_Impl",
-                    "*_Impl\$*",
-                )
-            }
-
-            annotations {
-                excludes += listOf(
-                    "dagger.Module",
-                    "dagger.internal.DaggerGenerated",
-                    "javax.annotation.Generated",
-                    "com.bumptech.glide.annotation.GlideModule"
-                )
+    plugins.withId("com.android.base") {
+        val android = the<TestedExtension>()
+        afterEvaluate {
+            sonar {
+                androidVariant = if(android.hasVariant("prodDebug")) "prodDebug" else null
             }
         }
     }
@@ -77,7 +51,7 @@ koverMerged {
     enable()
 }
 
-sonarqube {
+sonar {
     properties {
         property("sonar.projectKey", "ddaeyeonkim_circleciSample")
         property("sonar.organization", "danielkim")
@@ -93,3 +67,48 @@ sonarqube {
         property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/kover/xml/report.xml")
     }
 }
+
+fun TestedExtension.hasVariant(variant: String): Boolean {
+    return unitTestVariants.firstOrNull { it.name == "${variant}UnitTest" }?.let { true } ?: false
+}
+
+val excludesPaths = listOf(
+    // DataBinding
+    "*.databinding.*",
+    "*.BR",
+    "*.DataBinderMapperImpl",
+    "*.DataBinderMapperImpl\$*",
+    "*.DataBindingTriggerClass",
+    // Dagger
+    "dagger.hilt.internal.aggregatedroot.codegen.*",
+    "hilt_aggregated_deps.*",
+    "*ComposableSingletons*",
+    "*_HiltModules*",
+    "*Hilt_*",
+    "*BuildConfig",
+    "*.DaggerAppComponent",
+    "*.DaggerAppComponent\$*",
+    "*_Factory\$*",
+    "*_Provide*\$*",
+    // Glide
+    "com.bumptech.glide.*",
+    "*.Glide*",
+    // Navigation
+    "*Args",
+    "*Args\$*",
+    "*Directions",
+    "*Directions\$*",
+    // Generated Callback
+    "*.generated.*",
+    // Room
+    "*_Impl",
+    "*_Impl\$*",
+)
+
+val excludesAnnotations = listOf(
+    "dagger.Module",
+    "dagger.internal.DaggerGenerated",
+    "javax.annotation.Generated",
+    "com.bumptech.glide.annotation.GlideModule"
+)
+
