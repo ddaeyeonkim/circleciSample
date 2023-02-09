@@ -7,7 +7,6 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.7.21" apply false
     id("org.sonarqube") version "3.5.0.2730"
     id("org.jetbrains.kotlin.jvm") version "1.7.21" apply false
-    // id("coverage")
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
 
