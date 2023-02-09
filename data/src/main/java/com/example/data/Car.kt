@@ -1,9 +1,10 @@
 package com.example.data
 
 class Car {
-    private var position = 0
+    private var _position = 0
+    val position get() = _position
 
     fun move() {
-        position++
+        _position++
     }
 }

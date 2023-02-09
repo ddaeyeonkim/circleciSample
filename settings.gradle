@@ -16,4 +16,3 @@ rootProject.name = "circleciSample"
 include ':app'
 include ':data'
 include ':lib'
-includeBuild 'coverage-plugin'
