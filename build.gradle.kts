@@ -10,51 +10,55 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
 
+val excludesPaths = listOf(
+    // DataBinding
+    "*.databinding.*",
+    "*.BR",
+    "*.DataBinderMapperImpl",
+    "*.DataBinderMapperImpl\$*",
+    "*.DataBindingTriggerClass",
+    // Dagger
+    "dagger.hilt.internal.aggregatedroot.codegen.*",
+    "hilt_aggregated_deps.*",
+    "*ComposableSingletons*",
+    "*_HiltModules*",
+    "*Hilt_*",
+    "*BuildConfig",
+    "*.DaggerAppComponent",
+    "*.DaggerAppComponent\$*",
+    "*_Factory\$*",
+    "*_Provide*\$*",
+    // Glide
+    "com.bumptech.glide.*",
+    "*.Glide*",
+    // Navigation
+    "*Args",
+    "*Args\$*",
+    "*Directions",
+    "*Directions\$*",
+    // Generated Callback
+    "*.generated.*",
+    // Room
+    "*_Impl",
+    "*_Impl\$*"
+)
+
+val excludesAnnotations = listOf(
+    "dagger.Module",
+    "dagger.internal.DaggerGenerated",
+    "javax.annotation.Generated",
+    "com.bumptech.glide.annotation.GlideModule"
+)
+
 subprojects {
     apply(plugin = "kover")
     kover {
         filters {
             classes {
-                excludes += listOf(
-                    // DataBinding
-                    "*.databinding.*",
-                    "*.BR",
-                    "*.DataBinderMapperImpl",
-                    "*.DataBinderMapperImpl\$*",
-                    "*.DataBindingTriggerClass",
-                    // Dagger
-                    "dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
-                    "*ComposableSingletons*",
-                    "*_HiltModules*",
-                    "*Hilt_*",
-                    "*BuildConfig",
-                    "*.DaggerAppComponent",
-                    "*.DaggerAppComponent\$*",
-                    "*_Factory\$*",
-                    "*_Provide*\$*",
-                    // Glide
-                    "com.bumptech.glide.*",
-                    "*.Glide*",
-                    // Navigation
-                    "*Args",
-                    "*Args\$*",
-                    "*Directions",
-                    "*Directions\$*",
-                    // Generated Callback
-                    "*.generated.*",
-                    // Room
-                    "*_Impl",
-                    "*_Impl\$*",
-                )
+                excludes += excludesPaths
             }
             annotations {
-                excludes += listOf(
-                    "dagger.Module",
-                    "dagger.internal.DaggerGenerated",
-                    "javax.annotation.Generated",
-                    "com.bumptech.glide.annotation.GlideModule"
-                )
+                excludes += excludesAnnotations
             }
         }
 
@@ -84,6 +88,14 @@ subprojects {
 
 koverMerged {
     enable()
+    filters {
+        classes {
+            excludes += excludesPaths
+        }
+        annotations {
+            excludes += excludesAnnotations
+        }
+    }
 }
 
 sonar {
