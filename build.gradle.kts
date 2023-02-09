@@ -1,4 +1,5 @@
 import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -98,11 +99,14 @@ koverMerged {
     }
 }
 
+val sonarToken: String = gradleLocalProperties(rootDir).getProperty("sonar.token")
+
 sonar {
     properties {
         property("sonar.projectKey", "ddaeyeonkim_circleciSample")
         property("sonar.organization", "danielkim")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", sonarToken)
         property(
             "sonar.junit.reportPaths",
             listOf(
